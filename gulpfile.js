@@ -1,21 +1,14 @@
 var { watch, src, dest, parallel, series } = require('gulp');
-var plumber = require('gulp-plumber');
+
 var browserSync = require('browser-sync');
 var twig = require('gulp-twig');
+var sass = require('gulp-sass');
+var postcss = require('gulp-postcss');
+var autoprefixer = require('autoprefixer');
+var cssnano = require('cssnano');
+var imagemin = require('gulp-imagemin');
 
-function errorHandler(errors) {
-  console.warn('Error!');
-  console.warn(errors);
-}
 
-function buildSomething() {
-  return src('src/pages/*.html')
-    // Пламбер вешается в самом начале потока
-    .pipe(plumber({ errorHandler }))
-    .pipe(someTransformation())
-    .pipe(anotherTransformation())
-    .pipe(dest('build/'));
-}
 
 // Девсервер
 function devServer(cb) {
@@ -73,12 +66,43 @@ exports.default =
       .pipe(twig())
       .pipe(dest('build/'));
   }
-  
-  ...
-  
+
   function watchFiles() {
     watch(['src/pages/*.twig', 'src/pages/*.html'], buildPages);
     watch('src/styles/*.css', buildStyles);
     watch('src/scripts/**/*.js', buildScripts);
     watch('src/assets/**/*.*', buildAssets);
   }
+
+
+function buildStyles() {
+  return src('src/styles/*.scss')
+    .pipe(sass())
+    .pipe(dest('build/styles/'));
+}
+
+
+function watchFiles() {
+  watch('src/styles/*.scss', buildStyles);
+}
+
+function buildStyles() {
+  return src('src/styles/*.scss')
+    .pipe(sass())
+    .pipe(postcss([
+      autoprefixer(),
+      cssnano()
+    ]))
+    .pipe(dest('build/styles/'));
+}
+
+function buildAssets(cb) {
+  src(['src/assets/**/*.*', '!src/assets/img/**/*.*'])
+    .pipe(dest('build/assets/'));
+
+  src('src/assets/img/**/*.*')
+    .pipe(imagemin())
+    .pipe(dest('build/assets/img'));
+
+  cb();
+}
