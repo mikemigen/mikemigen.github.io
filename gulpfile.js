@@ -56,7 +56,7 @@ function watchFiles() {
   function buildPages() {
     return src(['src/pages/*.twig', 'src/pages/*.html'])
       .pipe(twig())
-      .pipe(dest('build/'));
+      .pipe(dest('build/pages/'));
   }
 
   function watchFiles() {
