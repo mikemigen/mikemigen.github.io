@@ -43,6 +43,12 @@ body {
     text-align: center;
 }
 
+@media screen and (max-width: 767px) {
+    .content {
+        display: block;
+    }
+}
+
 .content div {
     margin-top: 15px;
     border: 1px solid black;

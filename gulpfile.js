@@ -8,12 +8,12 @@ var autoprefixer = require('autoprefixer');
 var cssnano = require('cssnano');
 var imagemin = require('gulp-imagemin');
 
-var plumber = require('gulp-plumber');
+/*var plumber = require('gulp-plumber');
 
 function errorHandler(errors) {
   console.warn('Error!');
   console.warn(errors);
-}
+}*/
 
 function buildSomething() {
   return src('src/pages/*.html')
