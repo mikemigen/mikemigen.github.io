@@ -29,7 +29,7 @@ function devServer(cb) {
     watch: true,
     reloadDebounce: 150,
     notify: false,
-    server: { baseDir: './build' },
+    server: { baseDir: './build/pages/' },
   };
 
   browserSync.create().init(params);
@@ -38,6 +38,7 @@ function devServer(cb) {
 
 function buildScripts() {
   return src('src/scripts/**/*.js')
+    //.pipe(babel({ presets: ['@babel/env'] }))
     .pipe(dest('build/scripts/'));
 }
 
